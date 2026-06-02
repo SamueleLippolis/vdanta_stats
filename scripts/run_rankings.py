@@ -54,14 +54,14 @@ hist_df = compute_historical_ranking(players=original_data, num_seasons=num_seas
 print(f"\n=== Historical Ranking — up to {SSN_YEAR}/{SSN_YEAR + 1} ===")
 print(tabulate(hist_df, headers="keys", tablefmt="fancy_grid"))
 
-hist_df.to_csv(REPORTS_DIR / "historical_ranking.csv", index=True)
+ssn_year_spring   = SSN_YEAR + 1
+hist_df.to_csv(f"{REPORTS_DIR}/historical_ranking_after_{SSN_YEAR}_{ssn_year_spring}.csv", index=True)
 
 
 # ---------------------------------------------------------------------------
 # Current (weighted) ranking
 # ---------------------------------------------------------------------------
 
-ssn_year_spring   = SSN_YEAR + 1
 ranking_name      = f"Ranking after {SSN_YEAR}/{ssn_year_spring}"
 how_many_years_back = CURRENT_YEAR - SSN_YEAR - 1
 
@@ -79,6 +79,6 @@ curr_df = compute_current_ranking(
 print(f"\n=== {ranking_name} ===")
 print(tabulate(curr_df, headers="keys", tablefmt="fancy_grid"))
 
-curr_df.to_csv(REPORTS_DIR / "current_ranking.csv", index=True)
+curr_df.to_csv(f"{REPORTS_DIR}/ranking_after_{SSN_YEAR}_{ssn_year_spring}.csv", index=True)
 
 print(f"\nCSV reports saved to: {REPORTS_DIR}")
