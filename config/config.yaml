@@ -1,0 +1,30 @@
+# VDAnta Stats - Configuration
+
+data:
+  file_path: "/home/samuele/datasets/vdanta_stats/vdanta_piazzamenti.ods"
+  first_year_ever: 2020
+
+season:
+  current_year: 2026
+  ssn_year: 2025  # autumn year of the season (e.g. 2025 = season 2025/2026)
+
+scoring:
+  win: 10
+  qualified: 8
+  not_qualified: 6
+  absent: 5.75
+  relegated: 4
+
+weights:
+  three_years:
+    alpha_1: 0.2   # oldest
+    alpha_2: 0.3
+    alpha_3: 0.5   # most recent
+  two_years:
+    alpha_1: 0.35
+    alpha_2: 0.65
+  one_year:
+    alpha_1: 1.0
+
+reports:
+  output_dir: "reports/"
