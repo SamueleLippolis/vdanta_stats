@@ -1,0 +1,20 @@
+# VDAnta Stats configuration
+
+data:
+  file_path: "datasets/vdanta_piazzamenti.ods"
+
+year_selection:
+  # 2020 means the 2020/2021 season.
+  first_year: 2020
+  # 2025 means the 2025/2026 season.
+  last_year: 2025
+
+result_to_number_conversion:
+  W: 10
+  Q: 8
+  N: 6
+  A: 6
+  R: 4
+
+reports:
+  output_dir: "reports"

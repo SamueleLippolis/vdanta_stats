@@ -1,45 +1,51 @@
-"""
-data_loader.py
-Functions to load and parse the VDAnta results spreadsheet.
-"""
+"""Load and validate VDAnta season results."""
+
+from pathlib import Path
 
 import pandas as pd
 
 
-def extract_original_data(file_path: str) -> list[list[str]]:
-    """
-    Reads an Excel/ODS file with:
-      - first column  = season year (ignored)
-      - other columns = trainer names
-      - values below each name = result letters
+VALID_RESULTS = {"W", "Q", "N", "A", "R"}
 
-    Returns a list of lists like:
-        [
-            ['Lippo', 'W', 'Q', 'R', 'N', 'N', 'Q'],
-            ['Gallo', 'Q', 'R', 'R', 'R', 'W', 'Q'],
-            ...
-        ]
 
-    Result codes:
-        W = Winner
-        Q = Qualified
-        R = Relegated
-        N = Not qualified
-        A = Absent
-    """
-    # For .ods files you may need: pip install odfpy
-    df = pd.read_excel(file_path)
+def load_results(file_path: Path, first_year: int, last_year: int) -> pd.DataFrame:
+    """Return the selected seasons indexed by their starting year."""
+    if first_year > last_year:
+        raise ValueError("first_year cannot be greater than last_year")
 
-    # Drop fully empty rows/columns
-    df = df.dropna(how="all")
-    df = df.dropna(axis=1, how="all")
+    data = pd.read_excel(file_path).dropna(how="all").dropna(axis=1, how="all")
+    if data.empty or len(data.columns) < 2:
+        raise ValueError("The dataset must contain a season column and at least one coach")
 
-    # All columns except the first (season year)
-    names_columns = df.columns[1:]
+    season_column = data.columns[0]
+    data = data.rename(columns={season_column: "Season"})
+    data["Year"] = data["Season"].map(_season_start_year)
+    data = data[data["Year"].between(first_year, last_year)].copy()
 
-    original_data = []
-    for name in names_columns:
-        values = df[name].dropna().astype(str).tolist()
-        original_data.append([str(name)] + values)
+    expected_years = set(range(first_year, last_year + 1))
+    missing_years = sorted(expected_years - set(data["Year"]))
+    if missing_years:
+        raise ValueError(f"Dataset is missing seasons starting in: {missing_years}")
 
-    return original_data
+    coach_columns = [column for column in data.columns if column not in {"Season", "Year"}]
+    for column in coach_columns:
+        data[column] = data[column].map(_normalise_result)
+
+    return data.set_index("Year")[coach_columns].sort_index()
+
+
+def _season_start_year(value: object) -> int:
+    text = str(value).strip()
+    try:
+        return int(text.split("/")[0])
+    except ValueError as error:
+        raise ValueError(f"Invalid season value: {value!r}") from error
+
+
+def _normalise_result(value: object) -> str:
+    if pd.isna(value):
+        return "A"
+    result = str(value).strip().upper()
+    if result not in VALID_RESULTS:
+        raise ValueError(f"Unknown result code: {value!r}")
+    return result
