@@ -33,6 +33,6 @@ python scripts/generate_coaches_history.py
 ```
 
 The report folder name is derived automatically from `last_year`. For example,
-`last_year: 2025` produces `reports/2025_2026/`. The palmares is saved directly
-inside that folder as `palmares.csv`; every coach receives a two-row CSV summary
-and a PNG history chart inside its `coaches_history` subdirectory.
+`last_year: 2025` produces `reports/2025_2026/`. The palmares CSV and its visual
+PNG table are saved inside the `palmares` subdirectory; every coach receives a
+single PNG containing the summary table and history chart inside `coaches_history`.
