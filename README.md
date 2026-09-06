@@ -32,9 +32,9 @@ Estimates the ranking for the season starting in `last_year + 1`, using only the
 
 The calculation uses fixed weights: `W = 20`, `Q = 6`, `N = 1`, `A = 1`, and `R = -2`. These are independent of the chart conversion in the config.
 
-- **History score:** average score across seasons actually played, excluding absences.
+- **History score:** with at least three participations, average score across seasons actually played, excluding absences. With one or two participations, use `(W + Q + Q + R + R + R + R + actual results + N padding) / 10`: add two `N` results for one participation, or one `N` for two participations.
 - **Last 3 years score:** total score for the final three seasons of the historical window, divided by three. Absences and seasons before the window starts contribute `1` each.
-- **Newcomers:** coaches with no participations in the window receive `5/3` for each of the two scores.
+- **Newcomers:** coaches with no participations in the window receive `(Q + N + R) / 3 = 5/3` for Last 3 years score and `(W + Q + Q + N + N + N + N + R + R + R) / 10 = 3` for History score.
 - **Score:** History score + Last 3 years score.
 - **Ranking score:** Score divided by the highest Score among selected participants, multiplied by 100. This is a relative score, not a probability of winning.
 

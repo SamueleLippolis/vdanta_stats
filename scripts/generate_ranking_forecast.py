@@ -49,9 +49,20 @@ def build_ranking_forcast(results: pd.DataFrame, last_year: int) -> pd.DataFrame
         played = history[history != "A"]
         participations = len(played)
         if participations == 0:
-            historical = recent = newcomer_score
+            historical = Fraction(
+                sum(FORECAST_POINTS[r] for r in "WQQNNNNRRR"), 10
+            )
+            recent = newcomer_score
         else:
-            historical = Fraction(sum(FORECAST_POINTS[r] for r in played), participations)
+            if participations < 3:
+                # Sette risultati di base, risultati reali e N fino a dieci.
+                historical_results = list("WQQRRRR") + played.tolist()
+                historical_results += ["N"] * (10 - len(historical_results))
+                historical = Fraction(
+                    sum(FORECAST_POINTS[r] for r in historical_results), 10
+                )
+            else:
+                historical = Fraction(sum(FORECAST_POINTS[r] for r in played), participations)
             recent_results = history.reindex(recent_years, fill_value="A")
             recent = Fraction(sum(FORECAST_POINTS[r] for r in recent_results), 3)
         rows.append({
