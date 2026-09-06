@@ -1,6 +1,7 @@
 # VDAnta Stats
 
-Statistics and next-season forecasts for the “Rozzezza” fantasy-football group, originally known as “VDA” group. \\
+Statistics and next-season forecasts for the “Rozzezza” fantasy-football group, originally known as “VDA” group. 
+
 Three scripts turn the season dataset into tables and charts ready to share.
 
 ## Main features
