@@ -45,7 +45,7 @@ def _build_summary(coach: str, results: pd.Series) -> pd.DataFrame:
     counts = {
         "Partecipazioni": base_counts["Partecipazioni"],
         "Vittorie": base_counts["Vittorie"],
-        "Primi 3": base_counts["Primi 3"] + base_counts["Vittorie"],
+        "Primi 3": base_counts["Primi 3"],
         "Risultati neutri": int((results == "N").sum()),
         "Retrocessioni": base_counts["Retrocessioni"],
     }

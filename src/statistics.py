@@ -7,10 +7,10 @@ COUNT_COLUMNS = ["Vittorie", "Primi 3", "Partecipazioni", "Retrocessioni"]
 
 
 def count_results(results: pd.Series) -> dict[str, int]:
-    """Count results, with participations defined as W + Q + N + R."""
+    """Count top-three finishes as W + Q and participations as W + Q + N + R."""
     return {
         "Vittorie": int((results == "W").sum()),
-        "Primi 3": int((results == "Q").sum()),
+        "Primi 3": int(results.isin({"W", "Q"}).sum()),
         "Partecipazioni": int(results.isin({"W", "Q", "N", "R"}).sum()),
         "Retrocessioni": int((results == "R").sum()),
     }

@@ -10,7 +10,7 @@ Four scripts turn the season datasets into tables and charts ready to share.
 
 Builds a cumulative ranking over the configured seasons, with wins, second/third-place finishes, participations, and relegations. Coaches are sorted by wins, then second/third-place finishes, then participations (all descending), and finally relegations (ascending). Equal records share a position, using ranks such as `1, 2, 2, 4`.
 
-Outputs a CSV, a styled PNG table, and a table in the terminal. In this report, the column labelled `Primi 3` counts `Q` results; wins are listed separately under `Vittorie`.
+Outputs a CSV, a styled PNG table, and a table in the terminal. In this report, the column labelled `Primi 3` counts `Q` + `W` results; wins are also listed separately under `Vittorie`.
 
 ### 2. Coach history — `generate_coaches_history.py`
 
