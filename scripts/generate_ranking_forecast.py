@@ -18,7 +18,7 @@ from src.data_loader import load_results
 
 
 def select_forecast_coaches(data: pd.DataFrame, forecast_year: int) -> list:
-    """Legge le celle originali, prima che i vuoti siano convertiti in assenze."""
+    """Seleziona tutti i coach non assenti nella stagione da prevedere."""
     season_years = pd.to_numeric(
         data.iloc[:, 0].astype(str).str.strip().str.split("/").str[0],
         errors="coerce",
@@ -31,7 +31,7 @@ def select_forecast_coaches(data: pd.DataFrame, forecast_year: int) -> list:
     entries = season.iloc[0, 1:]
     return [
         coach for coach, value in entries.items()
-        if pd.isna(value) or (isinstance(value, str) and not value.strip())
+        if pd.isna(value) or str(value).strip().upper() != "A"
     ]
 
 

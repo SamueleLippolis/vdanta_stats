@@ -14,7 +14,7 @@ Outputs a CSV, a styled PNG table, and a table in the terminal. In this report, 
 
 ### 2. Coach history — `generate_coaches_history.py`
 
-Creates one PNG per coach, combining a summary table with a season-by-season result chart. Absent seasons appear as gaps in the chart.
+Creates one PNG per coach, combining a summary table with a season-by-season result chart. Absent seasons appear as gaps in the chart. Run it once for the latest configured historical period: files are saved in `reports/coaches_history/` and updated on subsequent runs, without creating a separate copy for each year.
 
 The summary includes counts and percentages:
 
@@ -28,7 +28,7 @@ All result percentages use the coach’s participations as their denominator. Pe
 
 ### 3. Next-season forecast — `generate_ranking_forecast.py`
 
-Estimates the ranking for the season starting in `last_year + 1`, using only the configured historical period. Only coaches with an empty cell (or whitespace) in the forecast season are included; `A` and any other non-empty value exclude a coach.
+Estimates the ranking for the season starting in `last_year + 1`, using only the configured historical period. All coaches whose forecast-season cell is not `A` are included: empty cells, whitespace, and recorded results (`W`, `Q`, `N`, `R`) all qualify. Absence codes are checked ignoring case and surrounding whitespace. This also supports forecasts for past seasons: the target season selects participants, while scores use only results through `last_year`.
 
 The calculation uses fixed weights: `W = 20`, `Q = 6`, `N = 1`, `A = 1`, and `R = -2`. These are independent of the chart conversion in the config.
 
@@ -123,18 +123,19 @@ python scripts/generate_ranking_forecast.py
 
 ### 5. Find your reports
 
-All outputs belong to the final historical season selected in the config, including the forecast for the following season. With `last_year: 2025`, the output structure is:
+Palmarès and forecast outputs belong to the final historical season selected in the config, including the forecast for the following season. Coach histories share one folder directly under the configured reports directory. With `last_year: 2025`, the output structure is:
 
 ```text
-reports/2025_2026/
-├── palmares/
-│   ├── palmares.csv
-│   └── palmares.png
+reports/
 ├── coaches_history/
 │   └── <coach>_history.png
-└── ranking_forecast/
-    ├── ranking_forecast.csv
-    └── ranking_forecast.png
+└── 2025_2026/
+    ├── palmares/
+    │   ├── palmares.csv
+    │   └── palmares.png
+    └── ranking_forecast/
+        ├── ranking_forecast.csv
+        └── ranking_forecast.png
 ```
 
 Running the scripts again updates the corresponding files. Generated reports are excluded from Git by `.gitignore`.

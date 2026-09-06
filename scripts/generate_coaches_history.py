@@ -25,7 +25,7 @@ def main() -> None:
         years["first_year"],
         years["last_year"],
     )
-    output_directory = _output_directory(config, years["last_year"]) / "coaches_history"
+    output_directory = _output_directory(config)
     output_directory.mkdir(parents=True, exist_ok=True)
 
     for coach in results.columns:
@@ -129,8 +129,8 @@ def _load_config() -> dict:
         return yaml.safe_load(stream)
 
 
-def _output_directory(config: dict, last_year: int) -> Path:
-    return PROJECT_ROOT / config["reports"]["output_dir"] / f"{last_year}_{last_year + 1}"
+def _output_directory(config: dict) -> Path:
+    return PROJECT_ROOT / config["reports"]["output_dir"] / "coaches_history"
 
 
 if __name__ == "__main__":
