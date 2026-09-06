@@ -2,7 +2,7 @@
 
 Statistics and next-season forecasts for the “Rozzezza” fantasy-football group, originally known as “VDA” group. 
 
-Three scripts turn the season dataset into tables and charts ready to share.
+Four scripts turn the season datasets into tables and charts ready to share.
 
 ## Main features
 
@@ -41,6 +41,14 @@ The calculation uses fixed weights: `W = 20`, `Q = 6`, `N = 1`, `A = 1`, and `R 
 Coaches are ranked by Score, with exact ties sharing a position before display rounding. A highest Score of zero raises an error because normalization is undefined. Negative scores are retained; if the highest Score is negative, the ordering still follows Score. The forecast season must have exactly one row in the dataset.
 
 Outputs a CSV, a styled PNG table matching the palmarès graphics, and a table in the terminal. The PNG title is generated automatically, for example: **“Risultato stimato per la stagione 2026/2027”**.
+
+### 4. Presidency — `generate_presidency.py`
+
+Reads `data.presidency_file_path` (default configuration: `datasets/vdanta_presidenza.ods`) over the configured historical period. Each person has a column: `P` means president, `V` means vice president, and empty cells mean no appointment. Multiple vice presidents per season are supported. People with no appointments are included.
+
+The table contains `Posizione`, `Nome`, `Presidenze`, `Vice presidenze`, and `Partecipazioni`, sorted by the last three columns in descending order. Equal records share a position (`1, 2, 2, 4`). Participations are seasons played (`W + Q + N + R`) from the results dataset, matched by name ignoring surrounding whitespace.
+
+Outputs a terminal table plus `presidency.csv` and `presidency.png` in `reports/<last_year>_<last_year + 1>/presidency/`, using the palmarès table style.
 
 ## How to use
 
@@ -91,6 +99,7 @@ Edit `configs/config.yaml`:
 ```yaml
 data:
   file_path: "datasets/vdanta_piazzamenti.ods"
+  presidency_file_path: "datasets/vdanta_presidenza.ods"
 
 year_selection:
   first_year: 2020 # means season 2020/21
@@ -111,12 +120,13 @@ Use the **starting year** of each season. Set `last_year` to the last season who
 
 With `last_year: 2025`, the reports cover results through **2025/2026** and the forecast targets **2026/2027**. Keep the ongoing or upcoming season outside the historical window.
 
-### 4. Run the three scripts
+### 4. Run the four scripts
 
 From the repository root, with the virtual environment activated:
 
 ```bash
 python scripts/generate_palmares.py
+python scripts/generate_presidency.py
 python scripts/generate_coaches_history.py
 python scripts/generate_ranking_forecast.py
 ```

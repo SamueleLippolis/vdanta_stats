@@ -2,6 +2,7 @@
 
 data:
   file_path: "datasets/vdanta_piazzamenti.ods"
+  presidency_file_path: "datasets/vdanta_presidenza.ods"
 
 year_selection:
   # 2020 means the 2020/2021 season.
