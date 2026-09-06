@@ -45,7 +45,7 @@ def _build_summary(coach: str, results: pd.Series) -> pd.DataFrame:
     counts = {
         "Partecipazioni": base_counts["Partecipazioni"],
         "Vittorie": base_counts["Vittorie"],
-        "Primi 3": base_counts["Primi 3"],
+        "Primi 3": base_counts["Primi 3"] + base_counts["Vittorie"],
         "Risultati neutri": int((results == "N").sum()),
         "Retrocessioni": base_counts["Retrocessioni"],
     }
@@ -55,7 +55,10 @@ def _build_summary(coach: str, results: pd.Series) -> pd.DataFrame:
         for column, value in counts.items()
         if column != "Partecipazioni"
     }
-    percentages["Partecipazioni"] = ""
+    season_count = len(results)
+    percentages["Partecipazioni"] = (
+        f"{(participations / season_count * 100 if season_count else 0.0):.2f}%"
+    )
     return pd.DataFrame(
         [
             {"Tipo": "Conteggi", "Nome": coach, **counts},
